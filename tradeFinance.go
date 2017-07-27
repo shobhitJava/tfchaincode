@@ -1366,7 +1366,7 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 		*/
 		// Hardcoded certs to blank
 		importerCert := []byte("")
-		exporterCert := []byte(""])
+		exporterCert := []byte("")
 		importerBankCert := []byte("")
 		exporterBankCert := []byte("")
 		
