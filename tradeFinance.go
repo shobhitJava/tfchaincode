@@ -1,7 +1,9 @@
 package main
 
-// Rahul Hundet 26-07-2017 commented validation for number of argumants 10 in submitLC as client code could not pass cert arguments, so save certs as blank
-// Removed logging related stuff as the package could not be found on bluemix service
+// Rahul Hundet 26-07-2017 
+// - validation for number of argumants 10 in submitLC as client code could not pass cert arguments, so save certs as blank
+// - Removed logging related stuff as the package could not be found on bluemix service
+// - Hardcoded Certs to blank in SubmitLC
 
 import (
 	"encoding/json"
@@ -1356,10 +1358,18 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 		exporterName := args[3]
 		importerBankName := args[4]
 		exporterBankName := args[5]
+		/*
 		importerCert := []byte(args[6])
 		exporterCert := []byte(args[7])
 		importerBankCert := []byte(args[8])
 		exporterBankCert := []byte(args[9])
+		*/
+		// Hardcoded certs to blank
+		importerCert := []byte("")
+		exporterCert := []byte(""])
+		importerBankCert := []byte("")
+		exporterBankCert := []byte("")
+		
         shippingCompany := ""
         insuranceCompany := ""
 
