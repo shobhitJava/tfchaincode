@@ -1,6 +1,7 @@
 package main
 
 // Rahul Hundet 26-07-2017 commented validation for number of argumants 10 in submitLC as client code could not pass cert arguments, so save certs as blank
+// Removed logging related stuff as the package could not be found on bluemix service
 
 import (
 	"encoding/json"
@@ -10,14 +11,14 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/core/crypto/primitives"
 
-	logging "github.com/op/go-logging"
+	//logging "github.com/op/go-logging"
 )
 
 // Access control flag - perform access control if flag is true
 //change to false to test 
 const accessControlFlag bool = false
 
-var myLogger = logging.MustGetLogger("access_control_helper")
+//var myLogger = logging.MustGetLogger("access_control_helper")
 
 // Contract struct
 type Contract struct {
@@ -128,7 +129,7 @@ func (t *TF) Init(stub shim.ChaincodeStubInterface, function string, args []stri
 //Fabric version migration to 0.6
 //func (t *TF) isCaller(stub *shim.ChaincodeStub, certificate []byte) (bool, error) {
 func (t *TF) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
-	myLogger.Debugf("Check caller...")
+//	myLogger.Debugf("Check caller...")
 	fmt.Printf("PDD-DBG: Check caller...")
 
 	sigma, err := stub.GetCallerMetadata()
@@ -144,10 +145,10 @@ func (t *TF) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (boo
 		return false, errors.New("Failed getting binding")
 	}
 
-	myLogger.Debugf("passed certificate [% x]", certificate)
-	myLogger.Debugf("passed sigma [% x]", sigma)
-	myLogger.Debugf("passed payload [% x]", payload)
-	myLogger.Debugf("passed binding [% x]", binding)
+////	myLogger.Debugf("passed certificate [% x]", certificate)
+//	myLogger.Debugf("passed sigma [% x]", sigma)
+//	myLogger.Debugf("passed payload [% x]", payload)
+//	myLogger.Debugf("passed binding [% x]", binding)
 
 	fmt.Printf("PDD-DBG: passed certificate [% x]", certificate)
 	fmt.Printf("PDD-DBG: passed sigma [% x]", sigma)
@@ -160,12 +161,12 @@ func (t *TF) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (boo
 		append(payload, binding...),
 	)
 	if err != nil {
-		myLogger.Error("Failed checking signature ", err.Error())
+//		myLogger.Error("Failed checking signature ", err.Error())
 		fmt.Printf("PDD-DBG: Failed checking signature %s", err.Error())
 		return ok, err
 	}
 	if !ok {
-		myLogger.Error("Invalid signature")
+//		myLogger.Error("Invalid signature")
 		fmt.Printf("PDD-DBG: Invalid signature")
 	}
 
