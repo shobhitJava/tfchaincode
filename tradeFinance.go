@@ -1344,9 +1344,11 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 	func (t *TF) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	if function == "submitLC" {
+		/*
 		if len(args) != 10 {
 			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 10. Got: %d.", len(args))
 		}
+		*/
 
 		UID := args[0]
 		lcJSON := args[1]
