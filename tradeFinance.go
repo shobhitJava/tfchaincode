@@ -593,7 +593,7 @@ func (t *TF) listContractsByRoleName(stub shim.ChaincodeStubInterface, args []st
     var allContractsList ContractsList
     
     companyID := args[0]
-		roleID := args[1]
+	roleID := args[1]
     
     if roleID == "4" {
         
@@ -1477,165 +1477,166 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 		return t.lc.ReSubmitDoc(stub, []string{UID, lcJSON, "", comment})
 
 	}  else if function == "submitED" {
-		/*if accessControlFlag == true {
-			res, err := t.isCallerExporterBank(stub, []string{args[0]})
-			if err != nil {
-				return nil, err
+			/*if accessControlFlag == true {
+				res, err := t.isCallerExporterBank(stub, []string{args[0]})
+				if err != nil {
+					return nil, err
+				}
+				if res == false {
+					return nil, errors.New("Access denied.")
+				}
+			}*/
+	        
+	        if len(args) != 9 {
+				return nil, fmt.Errorf("Incorrect number of arguments. Expecting 9. Got: %d.", len(args))
 			}
-			if res == false {
-				return nil, errors.New("Access denied.")
-			}
-		}*/
-        
-        if len(args) != 9 {
-			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 9. Got: %d.", len(args))
-		}
         
 
-		contractID := args[0]
-		BLPDF := args[1]
-		invoicePDF := args[2]
-		packingListPDF := args[3]
-		BLJSON := args[4]
-		invoiceJSON := args[5]
-		packingListJSON := args[6]
-        shippingCompanyname := args[7]
-        insuranceCompanyname := args[8]
-        
-        
-        var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: "BP"}}
-	columns = append(columns, col1)
-	col2 := shim.Column{Value: &shim.Column_String_{String_: contractID}}
-	columns = append(columns, col2)
+			contractID := args[0]
+			BLPDF := args[1]
+			invoicePDF := args[2]
+			packingListPDF := args[3]
+			BLJSON := args[4]
+			invoiceJSON := args[5]
+			packingListJSON := args[6]
+	        shippingCompanyname := args[7]
+	        insuranceCompanyname := args[8]
+	       
+	        var columns []shim.Column
+			col1 := shim.Column{Value: &shim.Column_String_{String_: "BP"}}
+			columns = append(columns, col1)
+			col2 := shim.Column{Value: &shim.Column_String_{String_: contractID}}
+			columns = append(columns, col2)
 
     
-   row, err := stub.GetRow("BPTable", columns)
-	if err != nil {
-		return nil, fmt.Errorf("Error: Failed retrieving document with ContractNo %s. Error %s", contractID, err.Error())
-	}
+		   row, err := stub.GetRow("BPTable", columns)
+			if err != nil {
+				return nil, fmt.Errorf("Error: Failed retrieving document with ContractNo %s. Error %s", contractID, err.Error())
+			}
 
-	// GetRows returns empty message if key does not exist
-	if len(row.Columns) == 0 {
-		return nil, nil
-	}
+			// GetRows returns empty message if key does not exist
+			if len(row.Columns) == 0 {
+				return nil, nil
+			}
         
-        importerName := row.Columns[3].GetString_()
-        exporterName := row.Columns[4].GetString_()
-        importerBankName := row.Columns[5].GetString_()
-        exporterBankName := row.Columns[6].GetString_()
-        importerCert := row.Columns[7].GetBytes()
-        exporterCert := row.Columns[8].GetBytes()
-        importerBankCert := row.Columns[9].GetBytes()
-        exporterBankCert := row.Columns[10].GetBytes()
+	        importerName := row.Columns[3].GetString_()
+	        exporterName := row.Columns[4].GetString_()
+	        importerBankName := row.Columns[5].GetString_()
+	        exporterBankName := row.Columns[6].GetString_()
+	        importerCert := row.Columns[7].GetBytes()
+	        exporterCert := row.Columns[8].GetBytes()
+	        importerBankCert := row.Columns[9].GetBytes()
+	        exporterBankCert := row.Columns[10].GetBytes()
+	        
+		       /*err = stub.DeleteRow(
+				"BPTable",
+				columns,
+			)
+			if err != nil {
+				return nil, errors.New("Failed deleting row.")
+			}
+		           */ 
         
-       /*err = stub.DeleteRow(
-		"BPTable",
-		columns,
-	)
-	if err != nil {
-		return nil, errors.New("Failed deleting row.")
-	}
-           */ 
-        ok, err := stub.ReplaceRow("BPTable", shim.Row{
-		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: "BP"}},
-			&shim.Column{Value: &shim.Column_String_{String_: contractID}},
-			&shim.Column{Value: &shim.Column_String_{String_: "STARTED"}},
-			&shim.Column{Value: &shim.Column_String_{String_: importerName}},
-			&shim.Column{Value: &shim.Column_String_{String_: exporterName}},
-			&shim.Column{Value: &shim.Column_String_{String_: importerBankName}},
-			&shim.Column{Value: &shim.Column_String_{String_: exporterBankName}},
-            &shim.Column{Value: &shim.Column_Bytes{Bytes: importerCert}},
-			&shim.Column{Value: &shim.Column_Bytes{Bytes: exporterCert}},
-			&shim.Column{Value: &shim.Column_Bytes{Bytes: importerBankCert}},
-			&shim.Column{Value: &shim.Column_Bytes{Bytes: exporterBankCert}},
-        	&shim.Column{Value: &shim.Column_String_{String_: shippingCompanyname}},
-			&shim.Column{Value: &shim.Column_String_{String_: insuranceCompanyname}},
-        },
-        })
+	        ok, err := stub.ReplaceRow("BPTable", shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: "BP"}},
+				&shim.Column{Value: &shim.Column_String_{String_: contractID}},
+				&shim.Column{Value: &shim.Column_String_{String_: "STARTED"}},
+				&shim.Column{Value: &shim.Column_String_{String_: importerName}},
+				&shim.Column{Value: &shim.Column_String_{String_: exporterName}},
+				&shim.Column{Value: &shim.Column_String_{String_: importerBankName}},
+				&shim.Column{Value: &shim.Column_String_{String_: exporterBankName}},
+	            &shim.Column{Value: &shim.Column_Bytes{Bytes: importerCert}},
+				&shim.Column{Value: &shim.Column_Bytes{Bytes: exporterCert}},
+				&shim.Column{Value: &shim.Column_Bytes{Bytes: importerBankCert}},
+				&shim.Column{Value: &shim.Column_Bytes{Bytes: exporterBankCert}},
+	        	&shim.Column{Value: &shim.Column_String_{String_: shippingCompanyname}},
+				&shim.Column{Value: &shim.Column_String_{String_: insuranceCompanyname}},
+	        },
+	        })
 
-	if !ok && err == nil {
-
-		return nil, errors.New("Document unable to Update.")
-	}
-
-		//Get the corresponding LC
-		lcJSON, err := t.lc.GetJSON(stub, []string{contractID})
-		if err != nil {
-			return nil, err
-		}
-
-		//Validate that the BL is correct
-		if BLJSON != string([]byte(`{}`)) {
-			_, err = t.bl.ValidateDoc(stub, []string{BLJSON, string(lcJSON)})
-			if err != nil {
-				return nil, err
+			if !ok && err == nil {
+		
+				return nil, errors.New("Document unable to Update.")
 			}
-		}
-
-		//Validate that the invoice is correct
-		if invoiceJSON != string([]byte(`{}`)) {
-			_, err = t.invoice.ValidateDoc(stub, []string{invoiceJSON, string(lcJSON)})
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		//Validate that the packing list is correct
-		if packingListJSON != string([]byte(`{}`)) {
-			_, err = t.pl.ValidateDoc(stub, []string{packingListJSON, string(lcJSON)})
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		if BLJSON != string([]byte(`{}`)) && invoiceJSON != string([]byte(`{}`)) && packingListJSON != string([]byte(`{}`)) {
-			res, err := t.crossCheckDocs([]string{string(lcJSON), string(BLJSON), string(invoiceJSON), string(packingListJSON)})
+		
+			//Get the corresponding LC
+			lcJSON, err := t.lc.GetJSON(stub, []string{contractID})
 			if err != nil {
 				return nil, err
 			}
 
-			if res == false {
-				return nil, errors.New("Documents are not consistent with each other")
+			//Validate that the BL is correct
+			if BLJSON != string([]byte(`{}`)) {
+				_, err = t.bl.ValidateDoc(stub, []string{BLJSON, string(lcJSON)})
+				if err != nil {
+					return nil, err
+				}
 			}
-		}
-
-		//Submit the validated BL to the ledger
-		if BLJSON != "" || BLPDF != "" {
-			_, err = t.bl.SubmitDoc(stub, []string{contractID, BLJSON, BLPDF})
-			if err != nil {
-				return nil, err
+	
+			//Validate that the invoice is correct
+			if invoiceJSON != string([]byte(`{}`)) {
+				_, err = t.invoice.ValidateDoc(stub, []string{invoiceJSON, string(lcJSON)})
+				if err != nil {
+					return nil, err
+				}
 			}
-		}
-
-		//Submit the validated invoice to the ledger
-		if invoiceJSON != "" || invoicePDF != "" {
-			_, err = t.invoice.SubmitDoc(stub, []string{contractID, invoiceJSON, invoicePDF})
-			if err != nil {
-				return nil, err
+	
+			//Validate that the packing list is correct
+			if packingListJSON != string([]byte(`{}`)) {
+				_, err = t.pl.ValidateDoc(stub, []string{packingListJSON, string(lcJSON)})
+				if err != nil {
+					return nil, err
+				}
 			}
-		}
-
-		//Submit the validated packing list to the ledger
-		if packingListJSON != "" || packingListPDF != "" {
-			_, err = t.pl.SubmitDoc(stub, []string{contractID, packingListJSON, packingListPDF})
-			if err != nil {
-				return nil, err
+	
+			if BLJSON != string([]byte(`{}`)) && invoiceJSON != string([]byte(`{}`)) && packingListJSON != string([]byte(`{}`)) {
+				res, err := t.crossCheckDocs([]string{string(lcJSON), string(BLJSON), string(invoiceJSON), string(packingListJSON)})
+				if err != nil {
+					return nil, err
+				}
+	
+				if res == false {
+					return nil, errors.New("Documents are not consistent with each other")
+				}
 			}
-		}
+	
+			//Submit the validated BL to the ledger
+			if BLJSON != "" || BLPDF != "" {
+				_, err = t.bl.SubmitDoc(stub, []string{contractID, BLJSON, BLPDF})
+				if err != nil {
+					return nil, err
+				}
+			}
+	
+			//Submit the validated invoice to the ledger
+			if invoiceJSON != "" || invoicePDF != "" {
+				_, err = t.invoice.SubmitDoc(stub, []string{contractID, invoiceJSON, invoicePDF})
+				if err != nil {
+					return nil, err
+				}
+			}
 
-		//If pay on sight is true in letter of credit, do state transition LC:ACCEPTED -> PAYMENT_RECEIVED
-		//var lc LC
-		//err = json.Unmarshal(lcJSON, &lc)
-		//if err != nil {
-		//	return nil, err
-		//}
+			//Submit the validated packing list to the ledger
+			if packingListJSON != "" || packingListPDF != "" {
+				_, err = t.pl.SubmitDoc(stub, []string{contractID, packingListJSON, packingListPDF})
+				if err != nil {
+					return nil, err
+				}
+			}
 
-		//if lc.Tag42C == "Sight" {
-		//	return t.lc.UpdateStatus(stub, []string{contractID, "PAYMENT_RECEIVED"})
-		//}
-
+			//If pay on sight is true in letter of credit, do state transition LC:ACCEPTED -> PAYMENT_RECEIVED
+			//var lc LC
+			//err = json.Unmarshal(lcJSON, &lc)
+			//if err != nil {
+			//	return nil, err
+			//}
+	
+			//if lc.Tag42C == "Sight" {
+			//	return t.lc.UpdateStatus(stub, []string{contractID, "PAYMENT_RECEIVED"})
+			//}
+		args = append(args, "SUBMITTED_ED_BY_EB")
+		return t.lc.UpdateStatus(stub, args)
 		return nil, nil
 	} else if function == "acceptED" {
 
