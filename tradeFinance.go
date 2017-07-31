@@ -1635,6 +1635,11 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 			//if lc.Tag42C == "Sight" {
 			//	return t.lc.UpdateStatus(stub, []string{contractID, "PAYMENT_RECEIVED"})
 			//}
+			/*
+			args = append(args, "Payment_due")
+		args = append(args, "PAYMENT_DUE_FROM_IB_TO_EB")
+	*/
+		_, err := t.lc.UpdateStatus(stub, args)
 		
 		return nil, nil
 	} else if function == "acceptED" {
