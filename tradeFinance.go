@@ -1639,7 +1639,7 @@ func (t *TF) crossCheckDocs(args []string) (bool, error) {
 			args = append(args, "Payment_due")
 		args = append(args, "PAYMENT_DUE_FROM_IB_TO_EB")
 	*/
-		_, err := t.lc.UpdateStatus(stub, args)
+		_, err = t.lc.UpdateStatus(stub, args)
 		
 		return nil, nil
 	} else if function == "acceptED" {
